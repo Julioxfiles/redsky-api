@@ -1,41 +1,55 @@
 <?php
 
-use Redsky\Framework\Container\Container;
-use Redsky\Framework\Http\Kernel;
-use Redsky\Framework\Http\Router;
-use Redsky\Framework\Http\Request;
-use Redsky\Framework\Http\Response;
-use Redsky\Framework\Http\Handler;
+use Redsky\Framework\Foundation\Application;
+use Redsky\Framework\Routing\Router;
+use Redsky\Framework\Routing\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Create Application Container
+| Create Application
 |--------------------------------------------------------------------------
 */
 
-$app = new Container();
+$app = new Application();
 
 /*
 |--------------------------------------------------------------------------
-| Register Core Singletons (Laravel style)
+| Resolve Container
 |--------------------------------------------------------------------------
 */
 
-$app->singleton(Router::class, fn () => new Router());
-
-$app->singleton(Handler::class, fn () => new Handler());
-
-$app->singleton(Kernel::class, function ($app) {
-    return new Kernel(
-        $app,
-        $app->make(Router::class),
-        $app->make(Handler::class)
-    );
-});
+$container = $app->container();
 
 /*
 |--------------------------------------------------------------------------
-| Load routes (IMPORTANT: after Router exists)
+| Create SINGLE Router instance
+|--------------------------------------------------------------------------
+*/
+
+$router = new Router();
+
+/*
+|--------------------------------------------------------------------------
+| Register Router into Container
+|--------------------------------------------------------------------------
+*/
+
+$container->singleton(
+    Router::class,
+    fn () => $router
+);
+
+/*
+|--------------------------------------------------------------------------
+| Bind Route Facade to SAME Router instance
+|--------------------------------------------------------------------------
+*/
+
+Route::setRouter($router);
+
+/*
+|--------------------------------------------------------------------------
+| Load application routes
 |--------------------------------------------------------------------------
 */
 
@@ -43,7 +57,7 @@ require __DIR__ . '/../routes/web.php';
 
 /*
 |--------------------------------------------------------------------------
-| Return application container
+| Return Application
 |--------------------------------------------------------------------------
 */
 

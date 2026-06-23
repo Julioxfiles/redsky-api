@@ -1,6 +1,6 @@
 <?php
 
-use Redsky\Framework\Http\Route;
+use Redsky\Framework\Routing\Route;
 use Redsky\Framework\Http\Response;
 
 /*
