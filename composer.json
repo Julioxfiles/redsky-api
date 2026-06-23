@@ -1,13 +1,43 @@
 {
   "name": "redsky/api",
   "license": "proprietary",
-  "description": "A laravel-style Api Rest App from Redsky.",
+  "description": "A Laravel-style API Rest App from Redsky.",
+
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+
   "autoload": {
     "psr-4": {
       "App\\": "app/"
     }
   },
+
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../redsky-framework",
+      "options": {
+        "symlink": true
+      }
+    }
+  ],
+
   "require": {
-    "redsky/framework": "^1.0"
+    "redsky/framework": "dev-main",
+    "php": ">=8.1"
+  },
+
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+
+  "scripts": {
+    "post-install-cmd": [
+      "@composer dump-autoload"
+    ],
+    "post-update-cmd": [
+      "@composer dump-autoload"
+    ]
   }
 }

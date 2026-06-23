@@ -2,28 +2,48 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-/**
- * 1. Bootstrapping de la aplicación
- */
-$container = require __DIR__ . '/../bootstrap/app.php';
+/*
+|--------------------------------------------------------------------------
+| Bootstrap Application
+|--------------------------------------------------------------------------
+*/
 
-/**
- * 2. Resolver Kernel desde el container
- */
-$kernel = $container->make(\Redsky\Framework\Http\Kernel::class);
+$app = require __DIR__ . '/../bootstrap/app.php';
 
-/**
- * 3. Request temporal (después será clase Request real)
- */
-$request = $_SERVER;
+/*
+|--------------------------------------------------------------------------
+| Capture Request
+|--------------------------------------------------------------------------
+*/
 
-/**
- * 4. Ejecutar Kernel
- */
+$request = \Redsky\Framework\Http\Request::capture();
+
+/*
+|--------------------------------------------------------------------------
+| Resolve Kernel
+|--------------------------------------------------------------------------
+*/
+
+$kernel = $app->make(\Redsky\Framework\Http\Kernel::class);
+
+/*
+|--------------------------------------------------------------------------
+| Handle Request
+|--------------------------------------------------------------------------
+*/
+
 $response = $kernel->handle($request);
 
-/**
- * 5. Output
- */
-echo "<pre>";
-var_dump($response);
+/*
+|--------------------------------------------------------------------------
+| Send Response (boundary layer ONLY)
+|--------------------------------------------------------------------------
+*/
+
+http_response_code($response->status());
+
+foreach ($response->headers() as $key => $value) {
+    header($key . ': ' . $value);
+}
+
+echo $response->body();

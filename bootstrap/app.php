@@ -2,20 +2,49 @@
 
 use Redsky\Framework\Container\Container;
 use Redsky\Framework\Http\Kernel;
+use Redsky\Framework\Http\Router;
+use Redsky\Framework\Http\Request;
+use Redsky\Framework\Http\Response;
+use Redsky\Framework\Http\Handler;
 
-/**
- * 1. Crear Container base
- */
-$container = new Container();
+/*
+|--------------------------------------------------------------------------
+| Create Application Container
+|--------------------------------------------------------------------------
+*/
 
-/**
- * 2. Registrar el Kernel dentro del container
- */
-$container->singleton(Kernel::class, function ($container) {
-    return new Kernel($container);
+$app = new Container();
+
+/*
+|--------------------------------------------------------------------------
+| Register Core Singletons (Laravel style)
+|--------------------------------------------------------------------------
+*/
+
+$app->singleton(Router::class, fn () => new Router());
+
+$app->singleton(Handler::class, fn () => new Handler());
+
+$app->singleton(Kernel::class, function ($app) {
+    return new Kernel(
+        $app,
+        $app->make(Router::class),
+        $app->make(Handler::class)
+    );
 });
 
-/**
- * 3. Retornar container como punto de entrada de la app
- */
-return $container;
+/*
+|--------------------------------------------------------------------------
+| Load routes (IMPORTANT: after Router exists)
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__ . '/../routes/web.php';
+
+/*
+|--------------------------------------------------------------------------
+| Return application container
+|--------------------------------------------------------------------------
+*/
+
+return $app;
