@@ -1,7 +1,8 @@
 <?php
 
-use Redsky\Framework\Routing\Route;
-use Redsky\Framework\Http\Response;
+use RedSky\Framework\Routing\Route;
+use RedSky\Framework\Http\Response;
+use RedSky\Api\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,7 @@ Route::get('/test', function () {
     ]);
 });
 
+/*
 Route::get('/users', function () {
     return Response::json([
         'data' => [
@@ -29,3 +31,6 @@ Route::get('/users', function () {
         ]
     ]);
 });
+*/
+
+Route::get('/users', [UserController::class, 'index']);

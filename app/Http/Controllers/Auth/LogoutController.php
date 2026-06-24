@@ -12,7 +12,7 @@ class LogoutController
         // En JWT stateless normalmente el cliente elimina el token.
         // Si luego implementas blacklist, aquí invalidas token.
 
-        return (new Response())->ok([
+        return (new Response::ok([
             'message' => 'Logged out successfully',
         ]);
     }

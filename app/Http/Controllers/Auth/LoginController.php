@@ -13,7 +13,7 @@ class LoginController
     {
         // Validar input
         if (!$request->filled('email') || !$request->filled('password')) {
-            return (new Response())->validationError([
+            return (new Response::validationError([
                 'email'    => 'Email is required',
                 'password' => 'Password is required',
             ]);
@@ -26,12 +26,12 @@ class LoginController
         $user = User::where('email', $email)->first();
 
         if (!$user) {
-            return (new Response())->unauthorized('Invalid credentials');
+            return (new Response::unauthorized('Invalid credentials'));
         }
 
         // Verificar password
         if (!password_verify($password, $user->password)) {
-            return (new Response())->unauthorized('Invalid credentials');
+            return (new Response::unauthorized('Invalid credentials'));
         }
 
         // Generar token
@@ -43,7 +43,7 @@ class LoginController
             'role'  => $user->role,
         ]);
 
-        return (new Response())->ok([
+        return (new Response::ok([
             'token' => $token,
             'user'  => [
                 'id'    => $user->id,

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace RedSky\Api\Models;
 
-use RedSky\Framework\Models\Model;
+use RedSky\Framework\Database\Model;
 
 class User extends Model
 {
@@ -19,10 +19,12 @@ class User extends Model
         'password_hash'
     ];
 
+    /*
     public static function byEmail(string $email): ?self
     {
         return static::query()
             ->where('email', '=', $email)
             ->first();
     }
+    */
 }

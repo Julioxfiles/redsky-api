@@ -1,8 +1,11 @@
 <?php
 
-use Redsky\Framework\Foundation\Application;
-use Redsky\Framework\Routing\Router;
-use Redsky\Framework\Routing\Route;
+use RedSky\Framework\Foundation\Application;
+use RedSky\Framework\Routing\Router;
+use RedSky\Framework\Routing\Route;
+
+use RedSky\Framework\Database\Connection\Connection;
+use RedSky\Framework\Database\Model;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +49,28 @@ $container->singleton(
 */
 
 Route::setRouter($router);
+
+/*
+|--------------------------------------------------------------------------
+| DATABASE CONFIGURATION + BOOT
+|--------------------------------------------------------------------------
+*/
+
+Connection::configure([
+    'default' => [
+        'driver'   => 'mysql',
+        'host'     => '127.0.0.1',
+        'port'     => 3306,
+        'database' => 'lancaster',
+        'username' => 'root',
+        'password' => '',
+        'charset'  => 'utf8mb4',
+    ],
+]);
+
+// 🔥 IMPORTANT: initialize Model with framework connection
+Model::setConnection(Connection::get());
+Model::setGrammar(Connection::grammar());
 
 /*
 |--------------------------------------------------------------------------

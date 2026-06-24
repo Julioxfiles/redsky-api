@@ -12,7 +12,10 @@ class UserController
 {
     public function index()
     {
+
         try {
+
+            //die("UserController index method called");
 
             $users = User::all();
 
@@ -22,7 +25,8 @@ class UserController
             ], 200);
 
         } catch (\Throwable $e) {
-
+            echo "Error: " . $e->getMessage(); // Debugging line
+            die();
             return Response::json([
                 "status" => "error",
                 "message" => "Error al obtener usuarios"

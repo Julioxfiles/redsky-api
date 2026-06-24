@@ -3,8 +3,9 @@
 namespace RedSky\Api\Http\Controllers\Auth;
 
 use RedSky\Framework\Http\Request;
+use RedSky\Framework\Http\Response;
+use RedSky\Framework\Security\Jwt\JwtService;
 use RedSky\Api\Models\User;
-use RedSky\Framework\Security\JwtService;
 
 class AuthController
 {
@@ -27,7 +28,7 @@ class AuthController
         $user = User::where('email', '=', $email)->first();
 
         if (!$user || !password_verify($password, $user->password_hash)) {
-            return response()->error('Invalid credentials', 401);
+            return Response::error('Invalid credentials', 401);
         }
 
         // 🔥 JWT GENERATION
@@ -39,7 +40,7 @@ class AuthController
             'role' => $user->role
         ]);
 
-        return response()->ok([
+        return Response::ok([
             'token' => $token,
             'user' => [
                 'id'    => $user->id,
@@ -72,7 +73,7 @@ class AuthController
         $exists = User::where('email', '=', $email)->first();
 
         if ($exists) {
-            return response()->validationError(
+            return Response::validationError(
                 ['email' => 'Email already exists'],
                 'Validation failed'
             );
@@ -86,7 +87,7 @@ class AuthController
             'role'          => 'user',
         ]);
 
-        return response()->created([
+        return Response::created([
             'id'    => $user->id,
             'email' => $user->email,
             'role'  => $user->role,
