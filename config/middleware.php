@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
 
-use RedSky\Api\Middleware\AuthMiddleware;
-use RedSky\Api\Middleware\JsonMiddleware;
+use RedSky\Framework\Http\Middleware\AuthMiddleware;
+use RedSky\Framework\Http\Middleware\JsonMiddleware;
 
 return [
     'auth' => AuthMiddleware::class,

@@ -1,80 +1,97 @@
 <?php
 
-use RedSky\Framework\Foundation\Application;
+declare(strict_types=1);
+
 use RedSky\Framework\Routing\Router;
 use RedSky\Framework\Routing\Route;
-
 use RedSky\Framework\Database\Connection\Connection;
 use RedSky\Framework\Database\Model;
+use RedSky\Framework\Config\Repository;
+use RedSky\Framework\Support\Env;
 
 /*
 |--------------------------------------------------------------------------
-| Create Application
+| Carga el archivo .env
 |--------------------------------------------------------------------------
 */
 
-$app = new Application();
+
+Env::load(dirname(__DIR__) . '/.env');
 
 /*
 |--------------------------------------------------------------------------
-| Resolve Container
+| Bootstrap: Application Container
 |--------------------------------------------------------------------------
 */
+
+$app = new \RedSky\Framework\Foundation\Application();
 
 $container = $app->container();
 
 /*
 |--------------------------------------------------------------------------
-| Create SINGLE Router instance
+| Register Router (single instance)
 |--------------------------------------------------------------------------
 */
 
 $router = new Router();
-
-/*
-|--------------------------------------------------------------------------
-| Register Router into Container
-|--------------------------------------------------------------------------
-*/
 
 $container->singleton(
     Router::class,
     fn () => $router
 );
 
-/*
-|--------------------------------------------------------------------------
-| Bind Route Facade to SAME Router instance
-|--------------------------------------------------------------------------
-*/
-
 Route::setRouter($router);
 
 /*
 |--------------------------------------------------------------------------
-| DATABASE CONFIGURATION + BOOT
+| Load Configuration Files (raw array)
 |--------------------------------------------------------------------------
 */
 
-Connection::configure([
-    'default' => [
-        'driver'   => 'mysql',
-        'host'     => '127.0.0.1',
-        'port'     => 3306,
-        'database' => 'lancaster',
-        'username' => 'root',
-        'password' => '',
-        'charset'  => 'utf8mb4',
-    ],
-]);
+$config = [];
 
-// 🔥 IMPORTANT: initialize Model with framework connection
+foreach (glob(__DIR__ . '/../config/*.php') as $file) {
+    $key = basename($file, '.php');
+
+    $value = require $file;
+
+    if (!is_array($value)) {
+        die("CONFIG ERROR in: $file");
+    }
+
+    $config[$key] = $value;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Register Config Repository into Container
+|--------------------------------------------------------------------------
+*/
+
+$container->singleton('config', function () use ($config) {
+    return new Repository($config);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Boot Database Layer
+|--------------------------------------------------------------------------
+| IMPORTANT: env() must already be available here
+| so DB config can resolve correctly
+|--------------------------------------------------------------------------
+*/
+
+Connection::configure(
+    $config['database'] ?? []
+);
+
 Model::setConnection(Connection::get());
 Model::setGrammar(Connection::grammar());
 
 /*
 |--------------------------------------------------------------------------
-| Load application routes
+| Load Routes
 |--------------------------------------------------------------------------
 */
 
