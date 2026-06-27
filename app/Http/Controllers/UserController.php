@@ -1,12 +1,12 @@
 <?php
 
-namespace RedSky\Api\Http\Controllers;
+namespace App\Http\Controllers;
 
-use RedSky\Framework\Http\Request;
-use RedSky\Framework\Http\Response;
-use RedSky\Framework\Support\Validator;
-use RedSky\Framework\Support\JwtService;
-use RedSky\Api\Models\User;
+use RedSky\Http\Request;
+use RedSky\Http\Response;
+use RedSky\Support\Validator;
+use RedSky\Support\JwtService;
+use App\Models\User;
 
 class UserController
 {

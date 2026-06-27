@@ -11,7 +11,7 @@ declare(strict_types=1);
 if (!function_exists('app')) {
     function app(?string $key = null): mixed
     {
-        $app = \RedSky\Framework\Foundation\Application::getInstance();
+        $app = \RedSky\Foundation\Application::getInstance();
 
         if ($key === null) {
             return $app;
@@ -62,9 +62,9 @@ if (!function_exists('env')) {
 */
 
 if (!function_exists('request')) {
-    function request(): \RedSky\Framework\Http\Request
+    function request(): \RedSky\Http\Request
     {
-        return app(\RedSky\Framework\Http\Request::class);
+        return app(\RedSky\Http\Request::class);
     }
 }
 
@@ -75,9 +75,9 @@ if (!function_exists('request')) {
 */
 
 if (!function_exists('response')) {
-    function response(): \RedSky\Framework\Http\Response
+    function response(): \RedSky\Http\Response
     {
-        return app(\RedSky\Framework\Http\Response::class);
+        return app(\RedSky\Http\Response::class);
     }
 }
 
@@ -88,7 +88,7 @@ if (!function_exists('response')) {
 */
 
 if (!function_exists('redirect')) {
-    function redirect(string $to): \RedSky\Framework\Http\Response
+    function redirect(string $to): \RedSky\Http\Response
     {
         return response()->redirect($to);
     }
@@ -101,9 +101,9 @@ if (!function_exists('redirect')) {
 */
 
 if (!function_exists('auth')) {
-    function auth(): \RedSky\Framework\Security\Auth\Auth
+    function auth(): \RedSky\Security\Auth\Auth
     {
-        return app(\RedSky\Framework\Security\Auth\Auth::class);
+        return app(\RedSky\Security\Auth\Auth::class);
     }
 }
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace RedSky\Api\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use RedSky\Framework\Http\Request;
-use RedSky\Framework\Http\Response;
-use RedSky\Framework\Security\JwtService;
-use RedSky\Api\Models\User;
+use RedSky\Http\Request;
+use RedSky\Http\Response;
+use RedSky\Security\Jwt\JwtService;
+use App\Models\User;
 
 class LoginController
 {
@@ -13,7 +13,7 @@ class LoginController
     {
         // Validar input
         if (!$request->filled('email') || !$request->filled('password')) {
-            return (new Response::validationError([
+            return Response::validationError([
                 'email'    => 'Email is required',
                 'password' => 'Password is required',
             ]);
@@ -23,15 +23,15 @@ class LoginController
         $password = $request->string('password');
 
         // Buscar usuario
-        $user = User::where('email', $email)->first();
+        $user = User::where('email',"=", $email)->first();
 
         if (!$user) {
-            return (new Response::unauthorized('Invalid credentials'));
+            return Response::unauthorized('Invalid credentials');
         }
 
         // Verificar password
         if (!password_verify($password, $user->password)) {
-            return (new Response::unauthorized('Invalid credentials'));
+            return Response::unauthorized('Invalid credentials');
         }
 
         // Generar token
@@ -43,7 +43,7 @@ class LoginController
             'role'  => $user->role,
         ]);
 
-        return (new Response::ok([
+        return Response::ok([
             'token' => $token,
             'user'  => [
                 'id'    => $user->id,

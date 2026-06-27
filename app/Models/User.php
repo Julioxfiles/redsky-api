@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace RedSky\Api\Models;
+namespace App\Models;
 
-use RedSky\Framework\Database\Model;
+use RedSky\Database\Model;
 
 class User extends Model
 {

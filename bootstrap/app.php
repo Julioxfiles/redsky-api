@@ -2,50 +2,46 @@
 
 declare(strict_types=1);
 
-use RedSky\Framework\Routing\Router;
-use RedSky\Framework\Routing\Route;
-use RedSky\Framework\Database\Connection\Connection;
-use RedSky\Framework\Database\Model;
-use RedSky\Framework\Config\Repository;
-use RedSky\Framework\Support\Env;
+use RedSky\Foundation\Application;
+use RedSky\Routing\Router;
+use RedSky\Routing\Route;
+use RedSky\Config\Repository;
+use RedSky\Support\Env;
+use RedSky\Database\Connection\Connection;
+use RedSky\Database\Model;
 
 /*
 |--------------------------------------------------------------------------
-| Carga el archivo .env
+| Load .env
 |--------------------------------------------------------------------------
 */
-
 
 Env::load(dirname(__DIR__) . '/.env');
 
 /*
 |--------------------------------------------------------------------------
-| Bootstrap: Application Container
+| Create Application
 |--------------------------------------------------------------------------
 */
 
-$app = new \RedSky\Framework\Foundation\Application();
-
+$app = new Application();
 $container = $app->container();
 
 /*
 |--------------------------------------------------------------------------
-| Register Router (single instance)
+| SINGLE ROUTER (ONLY ONE INSTANCE)
 |--------------------------------------------------------------------------
 */
 
 $router = new Router();
 
-$container->singleton(
-    Router::class,
-    fn () => $router
-);
+$container->instance(Router::class, $router);
 
 Route::setRouter($router);
 
 /*
 |--------------------------------------------------------------------------
-| Load Configuration Files (raw array)
+| Config
 |--------------------------------------------------------------------------
 */
 
@@ -53,53 +49,39 @@ $config = [];
 
 foreach (glob(__DIR__ . '/../config/*.php') as $file) {
     $key = basename($file, '.php');
-
     $value = require $file;
 
     if (!is_array($value)) {
-        die("CONFIG ERROR in: $file");
+        throw new RuntimeException("Invalid config file: {$file}");
     }
 
     $config[$key] = $value;
 }
 
-/*
-|--------------------------------------------------------------------------
-| Register Config Repository into Container
-|--------------------------------------------------------------------------
-*/
-
-$container->singleton('config', function () use ($config) {
-    return new Repository($config);
-});
+$container->singleton('config', fn () => new Repository($config));
 
 /*
 |--------------------------------------------------------------------------
-| Boot Database Layer
-|--------------------------------------------------------------------------
-| IMPORTANT: env() must already be available here
-| so DB config can resolve correctly
+| Database
 |--------------------------------------------------------------------------
 */
 
-Connection::configure(
-    $config['database'] ?? []
-);
+Connection::configure($config['database'] ?? []);
 
 Model::setConnection(Connection::get());
 Model::setGrammar(Connection::grammar());
 
 /*
 |--------------------------------------------------------------------------
-| Load Routes
+| Routes (must use SAME router instance)
 |--------------------------------------------------------------------------
 */
 
-require __DIR__ . '/../routes/web.php';
+require __DIR__ . '/../routes/api.php';
 
 /*
 |--------------------------------------------------------------------------
-| Return Application
+| Return app
 |--------------------------------------------------------------------------
 */
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace RedSky\Api\Http\Controllers;
+namespace App\Http\Controllers;
 
 class DashboardController 
 {

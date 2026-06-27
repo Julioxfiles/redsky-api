@@ -1,11 +1,11 @@
 <?php
 
-namespace RedSky\Api\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use RedSky\Framework\Http\Request;
-use RedSky\Framework\Http\Response;
-use RedSky\Framework\Security\Jwt\JwtService;
-use RedSky\Api\Models\User;
+use RedSky\Http\Request;
+use RedSky\Http\Response;
+use RedSky\Security\Jwt\JwtService;
+use App\Models\User;
 
 class AuthController
 {

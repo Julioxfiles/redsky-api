@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "../redsky-framework",
-                "reference": "3dbbf3b217427813869d6d00be106d3abe61acee"
+                "reference": "8bd66005e02fff2790f8db824375cac32e7d0cc6"
             },
             "require": {
                 "php": ">=8.1"
@@ -20,7 +20,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "RedSky\\Framework\\": "src/"
+                    "RedSky\\": "src/"
                 },
                 "files": [
                     "src/Support/helpers.php"

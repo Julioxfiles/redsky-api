@@ -1,9 +1,9 @@
 <?php
 
-namespace RedSky\Api\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use RedSky\Framework\Http\Request;
-use RedSky\Framework\Http\Response;
+use RedSky\Http\Request;
+use RedSky\Http\Response;
 
 class LogoutController
 {
