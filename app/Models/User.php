@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use RedSky\Database\Model;
+use RedSky\Framework\Database\Model;
 
 class User extends Model
 {
