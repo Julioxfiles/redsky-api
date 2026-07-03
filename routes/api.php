@@ -1,7 +1,7 @@
 <?php
 
-use RedSky\Routing\Route;
-use RedSky\Http\Response;
+use RedSky\Framework\Routing\Route;
+use RedSky\Framework\Http\Response;
 use App\Http\Controllers\UserController;
 
 /*

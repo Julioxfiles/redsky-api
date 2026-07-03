@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use RedSky\Foundation\Application;
-use RedSky\Routing\Router;
-use RedSky\Routing\Route;
-use RedSky\Config\Repository;
-use RedSky\Support\Env;
-use RedSky\Database\Connection\Connection;
-use RedSky\Database\Model;
+use RedSky\Framework\Foundation\Application;
+use RedSky\Framework\Routing\Router;
+use RedSky\Framework\Routing\Route;
+use RedSky\Framework\Config\Repository;
+use RedSky\Framework\Support\Env;
+use RedSky\Framework\Database\Connection\Connection;
+use RedSky\Framework\Database\Model;
 
 /*
 |--------------------------------------------------------------------------
