@@ -2,7 +2,7 @@
 
 use RedSky\Framework\Routing\Route;
 use RedSky\Framework\Http\Response;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\EBibleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,9 +33,8 @@ Route::get('/users', function () {
 });
 */
 
-
-Route::get('/users', function () {
-    return Response::json([
-        'debug' => 'ROUTE USERS HIT'
-    ]);
+Route::get('/prueba123456', function () {
+    return 'FUNCIONA';
 });
+
+Route::get('/ebible/{book}/{chapter}', [EBibleController::class, 'show']);

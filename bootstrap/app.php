@@ -23,8 +23,8 @@ Env::load(dirname(__DIR__) . '/.env');
 | Create Application
 |--------------------------------------------------------------------------
 */
-
-$app = new Application();
+$app = Application::getInstance();
+//$app = new Application();
 $container = $app->container();
 
 /*
@@ -33,11 +33,11 @@ $container = $app->container();
 |--------------------------------------------------------------------------
 */
 
-$router = new Router();
+//$router = new Router();
 
-$container->instance(Router::class, $router);
+//$container->instance(Router::class, $router);
 
-Route::setRouter($router);
+//Route::setRouter($router);
 
 /*
 |--------------------------------------------------------------------------
