@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "../redsky-framework",
-                "reference": "34fc06102812327a90462de0c0a4486dd6bfe683"
+                "reference": "ec6d0f3e17827710bad3aa3ad99a46c658327bda"
             },
             "require": {
                 "php": ">=8.1"
